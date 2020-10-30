@@ -1,11 +1,12 @@
 import React from "react";
-import {Button, Grid, Typography} from "@material-ui/core";
+import {Box, Button, Grid, Typography} from "@material-ui/core";
 import {MainTypes, UserFullInfo} from "../store/main/types";
 import {RootState} from "../types";
 import {connect} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
 import {logout} from "../store/main/actions";
 import Cookies from 'js-cookie'
+import {ButtonWithModal} from "./index";
 
 interface MapStatePropsType {
     me: UserFullInfo | null
@@ -42,7 +43,12 @@ const Personal: React.FC<PersonalProps> | null = ({me, logout}) => {
                 <Typography>balance: {me.balance}</Typography>
             </Grid>
             <Grid item>
-                <Button onClick={onLogoutClick}>logout</Button>
+                <ButtonWithModal buttonTitle="logout">
+                    <Box display="flex" flexDirection="column" alignItems="center">
+                        <Box>are you sure?</Box>
+                        <Button onClick={onLogoutClick}>logout</Button>
+                    </Box>
+                </ButtonWithModal>
             </Grid>
         </Grid>
     )

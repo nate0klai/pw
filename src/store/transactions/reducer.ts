@@ -2,14 +2,19 @@ import {
     GET_TRANSACTIONS_SUCCESS,
     GET_TRANSACTIONS_PROCESS,
     GET_TRANSACTIONS_FAIL,
-    Transaction, CREATE_TRANSACTION_SUCCESS, CREATE_TRANSACTION_PROCESS, CREATE_TRANSACTION_FAIL
+    Transaction,
+    CREATE_TRANSACTION_SUCCESS,
+    CREATE_TRANSACTION_PROCESS,
+    CREATE_TRANSACTION_FAIL,
+    CLEAR_CREATE_TRANSACTION_ERROR
 } from "./types";
 
 const initialState = {
     transactions: [] as Transaction[],
     getTransactionsIsPending: false,
     createTransactionIsPending: false,
-    error: ''
+    createTransactionError: '',
+    getTransactionsError: ''
 };
 type InitialStateType = typeof initialState;
 
@@ -32,7 +37,7 @@ export const TransactionsReducer = (state = initialState, action: any): InitialS
             return {
                 ...state,
                 getTransactionsIsPending: false,
-                error: action.error
+                getTransactionsError: action.error
             };
 
         case CREATE_TRANSACTION_SUCCESS:
@@ -52,7 +57,13 @@ export const TransactionsReducer = (state = initialState, action: any): InitialS
             return {
                 ...state,
                 createTransactionIsPending: false,
-                error: action.error
+                createTransactionError: action.error
+            };
+
+        case CLEAR_CREATE_TRANSACTION_ERROR:
+            return {
+                ...state,
+                createTransactionError: ''
             };
 
         default:

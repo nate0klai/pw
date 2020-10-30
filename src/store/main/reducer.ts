@@ -1,4 +1,6 @@
 import {
+    CLEAR_LOGIN_ERROR,
+    CLEAR_REGISTER_ERROR,
     GET_USER_INFO_FAIL,
     GET_USER_INFO_PROGRESS,
     GET_USER_INFO_SUCCESS,
@@ -19,7 +21,9 @@ const initialState = {
     logoutIsPending: false,
     registerIsPending: false,
     getUserInfoIsPending: false,
-    error: ''
+    loginError: '',
+    registerError: '',
+    getUserInfoError: ''
 };
 type InitialStateType = typeof initialState;
 
@@ -55,14 +59,26 @@ export const MainReducer = (state = initialState, action: MainTypes): InitialSta
             return {
                 ...state,
                 loginIsPending: false,
-                error: action.error
+                loginError: action.error
+            };
+
+        case CLEAR_LOGIN_ERROR:
+            return {
+                ...state,
+                loginError: ''
             };
 
         case REGISTER_FAIL:
             return {
                 ...state,
                 registerIsPending: false,
-                error: action.error
+                registerError: action.error
+            };
+
+        case CLEAR_REGISTER_ERROR:
+            return {
+                ...state,
+                registerError: ''
             };
 
         case LOGOUT:
@@ -90,7 +106,7 @@ export const MainReducer = (state = initialState, action: MainTypes): InitialSta
             return {
                 ...state,
                 getUserInfoIsPending: false,
-                error: action.error
+                getUserInfoError: action.error
             }
 
         default:

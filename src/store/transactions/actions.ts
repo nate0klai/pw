@@ -1,4 +1,6 @@
 import {
+    CLEAR_CREATE_TRANSACTION_ERROR,
+    ClearCreateTransactionError,
     CREATE_TRANSACTION_FAIL,
     CREATE_TRANSACTION_PROCESS,
     CREATE_TRANSACTION_SUCCESS,
@@ -17,6 +19,7 @@ import {
 import axios, {AxiosResponse} from "axios";
 import Cookies from "js-cookie";
 import {UserSimpleInfo} from "../main/types";
+import {apiUrl} from "../variables";
 
 const getTransactionsSuccess = (transactions: Transaction[]): GetTransactionsSuccess => ({
     type: GET_TRANSACTIONS_SUCCESS,
@@ -41,20 +44,23 @@ const createTransactionFail = (error: string): CreateTransactionFail => ({
     type: CREATE_TRANSACTION_FAIL,
     error
 })
+export const clearCreateTransactionError = (): ClearCreateTransactionError => ({
+    type: CLEAR_CREATE_TRANSACTION_ERROR
+})
 
 export const getTransactions = (): ThunkTransactionsActionType => {
     return async (dispatch) => {
         dispatch(getTransactionsProcess())
         const idToken = Cookies.get('id_token')
         try {
-            const { data }: AxiosResponse<{trans_token: Transaction[]}> = await axios.get('http://193.124.114.46:3001/api/protected/transactions', {
+            const { data }: AxiosResponse<{trans_token: Transaction[]}> = await axios.get(apiUrl + '/api/protected/transactions', {
                 headers: {
                     Authorization: 'Bearer ' + idToken
                 }
             })
             dispatch(getTransactionsSuccess(data.trans_token))
         } catch (error) {
-            dispatch(getTransactionsFail(error.message))
+            dispatch(getTransactionsFail(error.response.data))
         }
     }
 }
@@ -65,7 +71,7 @@ export const createTransaction = (name: string, amount: number): ThunkTransactio
         dispatch(createTransactionProcess())
         const idToken = Cookies.get('id_token')
         try {
-            const { data }: AxiosResponse<{trans_token: Transaction}> = await axios.post('http://193.124.114.46:3001/api/protected/transactions', {
+            const { data }: AxiosResponse<{trans_token: Transaction}> = await axios.post(apiUrl + '/api/protected/transactions', {
                 name, amount
             }, {
                 headers: {
@@ -74,7 +80,7 @@ export const createTransaction = (name: string, amount: number): ThunkTransactio
             })
             dispatch(createTransactionSuccess(data.trans_token))
         } catch (error) {
-            dispatch(createTransactionFail(error.message))
+            dispatch(createTransactionFail(error.response.data))
         }
     }
 }
@@ -82,7 +88,7 @@ export const createTransaction = (name: string, amount: number): ThunkTransactio
 export const filteredUserList = async (filter: string) => {
     const idToken = Cookies.get('id_token')
     try {
-        const { data }: AxiosResponse<UserSimpleInfo[]> = await axios.post('http://193.124.114.46:3001/api/protected/users/list', {filter},{
+        const { data }: AxiosResponse<UserSimpleInfo[]> = await axios.post(apiUrl + '/api/protected/users/list', {filter},{
             headers: {
                 Authorization: 'Bearer ' + idToken
             }

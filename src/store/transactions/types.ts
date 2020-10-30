@@ -7,6 +7,7 @@ export const GET_TRANSACTIONS_FAIL = 'GET_TRANSACTIONS_FAIL'
 export const CREATE_TRANSACTION_SUCCESS = 'CREATE_TRANSACTION_SUCCESS'
 export const CREATE_TRANSACTION_PROCESS = 'CREATE_TRANSACTION_PROCESS'
 export const CREATE_TRANSACTION_FAIL = 'CREATE_TRANSACTION_FAIL'
+export const CLEAR_CREATE_TRANSACTION_ERROR = 'CLEAR_CREATE_TRANSACTION_ERROR'
 
 export interface GetTransactionsSuccess {
     type: typeof GET_TRANSACTIONS_SUCCESS,
@@ -30,6 +31,9 @@ export interface CreateTransactionFail {
     type: typeof CREATE_TRANSACTION_FAIL,
     error: string
 }
+export interface ClearCreateTransactionError {
+    type: typeof CLEAR_CREATE_TRANSACTION_ERROR
+}
 
 export interface Transaction {
     id: number,
@@ -40,7 +44,7 @@ export interface Transaction {
 }
 
 type GetTransactionsTypes = GetTransactionsSuccess | GetTransactionsProcess | GetTransactionsFail;
-type CreateTransactionTypes = CreateTransactionSuccess | CreateTransactionProcess | CreateTransactionFail;
+type CreateTransactionTypes = CreateTransactionSuccess | CreateTransactionProcess | CreateTransactionFail | ClearCreateTransactionError;
 export type TransactionsTypes = GetTransactionsTypes | CreateTransactionTypes;
 
 export type ThunkTransactionsActionType = ThunkAction<Promise<void>, RootState, void, TransactionsTypes>;

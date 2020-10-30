@@ -1,12 +1,13 @@
 import React from 'react';
-import {Button, Grid} from "@material-ui/core";
+import {Box, Button, Grid} from "@material-ui/core";
 import { connect } from 'react-redux';
 import {ThunkDispatch} from 'redux-thunk'
 import {RootState} from '../types'
-import {login} from '../store/main/actions'
+import {clearLoginError, login} from '../store/main/actions'
 import {MainTypes} from "../store/main/types";
 import {Field, InjectedFormProps, reduxForm} from 'redux-form'
 import {RenderTextField, ButtonWithModal} from "./index";
+import {Modal} from "./index";
 
 interface LoginFormValuesType {
     email: string,
@@ -51,31 +52,38 @@ const LoginForm = reduxForm<LoginFormValuesType>({
 })(LoginFormComponent)
 
 interface MapStateType {
-
+    error: string
 }
 
 interface MapDispatchType {
-    login: (email: string, password: string) => void
+    login: (email: string, password: string) => void,
+    clearLoginError: () => void
 }
 
 type LoginComponentProps = MapStateType & MapDispatchType;
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, MainTypes>): MapDispatchType => ({
-    login: (email: string, password: string) => dispatch(login(email, password))
+    login: (email: string, password: string) => dispatch(login(email, password)),
+    clearLoginError: () => dispatch(clearLoginError())
 });
 
 const mapStateToProps = (state: RootState): MapStateType => ({
-
+    error: state.main.loginError
 })
 
-const Login: React.FC<LoginComponentProps> = ({login}) => {
+const Login: React.FC<LoginComponentProps> = ({login, error, clearLoginError}) => {
 
     const handleLogin = ({email, password}: LoginFormValuesType) => login(email, password)
 
     return (
-        <ButtonWithModal buttonTitle="login">
-            <LoginForm onSubmit={handleLogin}/>
-        </ButtonWithModal>
+        <>
+            <ButtonWithModal buttonTitle="login">
+                <LoginForm onSubmit={handleLogin}/>
+            </ButtonWithModal>
+            <Modal open={error.length > 0} handleClose={clearLoginError}>
+                <Box>{error}</Box>
+            </Modal>
+        </>
     )
 }
 

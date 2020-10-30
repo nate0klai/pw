@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, Button, Grid} from "@material-ui/core";
-import Modal from "@material-ui/core/Modal";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import { connect } from 'react-redux';
 import {ThunkDispatch} from 'redux-thunk'
 import {RootState} from '../types'
-import {register} from '../store/main/actions'
+import {clearRegisterError, register} from '../store/main/actions'
 import {MainTypes} from "../store/main/types";
 import {RenderTextField} from "./RenderTextField";
 import {Field, reduxForm, InjectedFormProps} from "redux-form";
+import {ButtonWithModal, Modal} from "./index";
 
 interface RegisterFormValuesType {
     username: string
@@ -59,70 +58,40 @@ const RegisterForm = reduxForm<RegisterFormValuesType>({
 })(RegisterFormComponent)
 
 interface MapStateType {
-
+    error: string
 }
 
 interface MapDispatchType {
-    register: (username: string, email: string, password: string) => void
+    register: (username: string, email: string, password: string) => void,
+    clearRegisterError: () => void
 }
 
 type RegisterComponentProps = MapStateType & MapDispatchType;
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, MainTypes>): MapDispatchType => ({
-    register: (username: string, email: string, password: string) => dispatch(register(username, email, password))
+    register: (username: string, email: string, password: string) => dispatch(register(username, email, password)),
+    clearRegisterError: () => dispatch(clearRegisterError())
 });
 
 const mapStateToProps = (state: RootState): MapStateType => ({
-
+    error: state.main.registerError
 })
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        modal: {
-            position: 'absolute',
-            width: 400,
-            backgroundColor: theme.palette.background.paper,
-            border: '2px solid #000',
-            boxShadow: theme.shadows[5],
-            padding: theme.spacing(2, 4, 3),
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)'
-        }
-    }),
-);
-
-const Login: React.FC<RegisterComponentProps> = ({register}) => {
-    const classes = useStyles();
-    const [open, setOpen] = useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
+const Register: React.FC<RegisterComponentProps> = ({register, error, clearRegisterError}) => {
     const handleRegister = ({username, email, password}: RegisterFormValuesType) => {
         register(username, email, password)
     }
 
     return (
         <>
-            <Button onClick={handleOpen}>register</Button>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                <Box className={classes.modal}>
-                    <RegisterForm onSubmit={handleRegister}/>
-                </Box>
+            <ButtonWithModal buttonTitle="register">
+                <RegisterForm onSubmit={handleRegister}/>
+            </ButtonWithModal>
+            <Modal open={error.length > 0} handleClose={clearRegisterError}>
+                <Box>{error}</Box>
             </Modal>
         </>
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

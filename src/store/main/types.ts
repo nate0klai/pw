@@ -4,10 +4,12 @@ import {RootState} from "../../types";
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_PROGRESS = 'LOGIN_PROGRESS'
 export const LOGIN_FAIL = 'LOGIN_FAIL'
+export const CLEAR_LOGIN_ERROR = 'CLEAR_LOGIN_ERROR'
 export const LOGOUT = 'LOGOUT'
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 export const REGISTER_PROGRESS = 'REGISTER_PROGRESS'
 export const REGISTER_FAIL = 'REGISTER_FAIL'
+export const CLEAR_REGISTER_ERROR = 'CLEAR_REGISTER_ERROR'
 
 export const GET_USER_INFO_SUCCESS = 'GET_USER_INFO_SUCCESS'
 export const GET_USER_INFO_PROGRESS = 'GET_USER_INFO_PROGRESS'
@@ -22,6 +24,9 @@ export interface LoginProgress {
 export interface LoginFail {
     type: typeof LOGIN_FAIL
     error: string
+}
+export interface ClearLoginError {
+    type: typeof CLEAR_LOGIN_ERROR
 }
 
 export interface Logout {
@@ -38,9 +43,12 @@ export interface RegisterFail {
     type: typeof REGISTER_FAIL
     error: string
 }
+export interface ClearRegisterError {
+    type: typeof CLEAR_REGISTER_ERROR
+}
 
-type LoginTypes = LoginSuccess | LoginProgress | LoginFail;
-type RegisterTypes = RegisterSuccess | RegisterProgress | RegisterFail;
+type LoginTypes = LoginSuccess | LoginProgress | LoginFail | ClearLoginError;
+type RegisterTypes = RegisterSuccess | RegisterProgress | RegisterFail | ClearRegisterError;
 type GetUserInfoTypes = GetUserInfoSuccess | GetUserInfoProgress | GetUserInfoFail;
 export type MainTypes = LoginTypes | Logout | RegisterTypes | GetUserInfoTypes;
 
