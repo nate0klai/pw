@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
+import {Header} from './components';
+import {ThunkDispatch} from "redux-thunk";
+import {RootState} from "./types";
+import {MainTypes} from "./store/main/types";
+import {getUserInfo} from "./store/main/actions";
+import {connect} from "react-redux";
+import Content from './containers/Content';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface MapDispatchPropsType {
+    getUserInfo: () => void
 }
 
-export default App;
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, MainTypes>): MapDispatchPropsType => ({
+    getUserInfo: () => dispatch(getUserInfo())
+});
+
+const App: React.FC<MapDispatchPropsType> = ({getUserInfo}) => {
+
+    useEffect(() => {
+        getUserInfo()
+    }, [])
+
+    return (
+      <div className="App">
+          <Header />
+          <Content/>
+      </div>
+    );
+}
+
+export default connect(null, mapDispatchToProps)(App);
