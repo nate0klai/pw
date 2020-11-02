@@ -1,11 +1,12 @@
-import React, {useEffect} from "react";
-import {Box} from "@material-ui/core";
-import {connect} from "react-redux";
-import {ThunkDispatch} from "redux-thunk";
-import {RootState} from "../types";
-import {TransactionsTypes, Transaction} from "../store/transactions/types";
-import {getTransactions} from "../store/transactions/actions";
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { Box } from '@material-ui/core'
 import { Table } from 'src/components'
+import { RootState } from '../types'
+import { TransactionsTypes, Transaction } from '../store/transactions/types'
+import { getTransactions as getTransactionsCreator } from '../store/transactions/actions'
+
 
 interface MapStatePropsType {
     transactions: Transaction[]
@@ -20,10 +21,10 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, TransactionsTypes>): MapDispatchPropsType => ({
-    getTransactions: () => dispatch(getTransactions())
-});
+    getTransactions: () => dispatch(getTransactionsCreator())
+})
 
-const Transactions: React.FC<MapStatePropsType & MapDispatchPropsType> = ({transactions, getTransactions}) => {
+const Transactions: React.FC<MapStatePropsType & MapDispatchPropsType> = ({ transactions, getTransactions }) => {
     useEffect(() => {
         getTransactions()
     }, [])
@@ -33,7 +34,7 @@ const Transactions: React.FC<MapStatePropsType & MapDispatchPropsType> = ({trans
     return (
         <>
             {transactions.length > 0 ? (
-                <Table list={transactions}/>
+                <Table list={transactions} />
             ) : (
                 <Box>no transactions</Box>
             )}

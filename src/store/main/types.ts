@@ -1,6 +1,3 @@
-import {ThunkAction} from "redux-thunk";
-import {RootState} from "../../types";
-
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_PROGRESS = 'LOGIN_PROGRESS'
 export const LOGIN_FAIL = 'LOGIN_FAIL'
@@ -47,10 +44,10 @@ export interface ClearRegisterError {
     type: typeof CLEAR_REGISTER_ERROR
 }
 
-type LoginTypes = LoginSuccess | LoginProgress | LoginFail | ClearLoginError;
-type RegisterTypes = RegisterSuccess | RegisterProgress | RegisterFail | ClearRegisterError;
-type GetUserInfoTypes = GetUserInfoSuccess | GetUserInfoProgress | GetUserInfoFail;
-export type MainTypes = LoginTypes | Logout | RegisterTypes | GetUserInfoTypes;
+type LoginTypes = LoginSuccess | LoginProgress | LoginFail | ClearLoginError
+type RegisterTypes = RegisterSuccess | RegisterProgress | RegisterFail | ClearRegisterError
+type GetUserInfoTypes = GetUserInfoSuccess | GetUserInfoProgress | GetUserInfoFail
+export type MainTypes = LoginTypes | Logout | RegisterTypes | GetUserInfoTypes
 
 export interface UserSimpleInfo {
     id: number,
@@ -75,5 +72,3 @@ export interface GetUserInfoFail {
     type: typeof GET_USER_INFO_FAIL
     error: string
 }
-
-export type ThunkMainActionType = ThunkAction<Promise<void>, RootState, void, MainTypes>;

@@ -1,12 +1,12 @@
-import React from "react";
-import {TextField} from "@material-ui/core";
+import React from 'react'
+import { TextField } from '@material-ui/core'
 
-interface RenderTextField {
+interface RenderTextFieldProps {
     input: any,
     meta: {touched: boolean, invalid: boolean, error: string}
 }
 
-export const RenderTextField: React.FC<RenderTextField> = ({
+export const RenderTextField: React.FC<RenderTextFieldProps> = ({
     input,
     meta: { touched, invalid, error },
     ...custom

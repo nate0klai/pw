@@ -1,10 +1,12 @@
-import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Box } from '@material-ui/core';
-import logo from "src/img/logo.svg";
-import {Login, Personal, Register} from 'src/components';
-import {RootState} from "../types";
-import {connect} from "react-redux";
+import React from 'react'
+import { connect } from 'react-redux'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { AppBar, Toolbar, Box } from '@material-ui/core'
+import logo from 'src/img/logo.svg'
+import Login from 'src/components/Login'
+import Register from 'src/components/Register'
+import Personal from 'src/components/Personal'
+import { RootState } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -20,8 +22,8 @@ const useStyles = makeStyles((theme: Theme) =>
                 maxHeight: '100%'
             }
         }
-    }),
-);
+    })
+)
 
 interface MapStatePropsType {
     isAuthorized: boolean
@@ -31,8 +33,8 @@ const mapStateToProps = (state: RootState) => ({
     isAuthorized: state.main.isAuthorized
 })
 
-const Header: React.FC<MapStatePropsType> = ({isAuthorized}) => {
-    const classes = useStyles();
+const Header: React.FC<MapStatePropsType> = ({ isAuthorized }) => {
+    const classes = useStyles()
 
     return (
         <div className={classes.root}>
@@ -43,11 +45,11 @@ const Header: React.FC<MapStatePropsType> = ({isAuthorized}) => {
                     </Box>
                     <Box>
                         {isAuthorized ? (
-                            <Personal/>
+                            <Personal />
                         ) : (
                             <>
-                                <Login/>
-                                <Register/>
+                                <Login />
+                                <Register />
                             </>
                         )}
 

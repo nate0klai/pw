@@ -1,13 +1,13 @@
-import React from 'react';
-import {Box, Button, Grid} from "@material-ui/core";
-import { connect } from 'react-redux';
-import {ThunkDispatch} from 'redux-thunk'
-import {RootState} from '../types'
-import {clearRegisterError, register} from '../store/main/actions'
-import {MainTypes} from "../store/main/types";
-import {RenderTextField} from "./RenderTextField";
-import {Field, reduxForm, InjectedFormProps} from "redux-form";
-import {ButtonWithModal, Modal} from "./index";
+import React from 'react'
+import { connect } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { Box, Button, Grid } from '@material-ui/core'
+import { Field, reduxForm, InjectedFormProps } from 'redux-form'
+import ButtonWithModal from 'src/components/ButtonWithModal'
+import { Modal, RenderTextField } from 'src/components'
+import { RootState } from '../types'
+import { clearRegisterError as clearRegisterErrorCreator, register as registerCreator } from '../store/main/actions'
+import { MainTypes } from '../store/main/types'
 
 interface RegisterFormValuesType {
     username: string
@@ -15,7 +15,7 @@ interface RegisterFormValuesType {
     password: string
 }
 
-const registerFormValidate = ({username, email, password, confirmPassword}: {username?: string, email?: string, password?: string, confirmPassword?: string}) => {
+const registerFormValidate = ({ username, email, password, confirmPassword }: {username?: string, email?: string, password?: string, confirmPassword?: string}) => {
     const errors = {} as {username?: string, email?: string, password?: string, confirmPassword?: string}
     if (!username) errors.username = 'Required'
     if (username && /[\W\s0-9]/g.test(username)) errors.username = 'Human names includes only letters' // check human name
@@ -66,26 +66,26 @@ interface MapDispatchType {
     clearRegisterError: () => void
 }
 
-type RegisterComponentProps = MapStateType & MapDispatchType;
+type RegisterComponentProps = MapStateType & MapDispatchType
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, MainTypes>): MapDispatchType => ({
-    register: (username: string, email: string, password: string) => dispatch(register(username, email, password)),
-    clearRegisterError: () => dispatch(clearRegisterError())
-});
+    register: (username: string, email: string, password: string) => dispatch(registerCreator(username, email, password)),
+    clearRegisterError: () => dispatch(clearRegisterErrorCreator())
+})
 
 const mapStateToProps = (state: RootState): MapStateType => ({
     error: state.main.registerError
 })
 
-const Register: React.FC<RegisterComponentProps> = ({register, error, clearRegisterError}) => {
-    const handleRegister = ({username, email, password}: RegisterFormValuesType) => {
+const Register: React.FC<RegisterComponentProps> = ({ register, error, clearRegisterError }) => {
+    const handleRegister = ({ username, email, password }: RegisterFormValuesType) => {
         register(username, email, password)
     }
 
     return (
         <>
             <ButtonWithModal buttonTitle="register">
-                <RegisterForm onSubmit={handleRegister}/>
+                <RegisterForm onSubmit={handleRegister} />
             </ButtonWithModal>
             <Modal open={error.length > 0} handleClose={clearRegisterError}>
                 <Box>{error}</Box>
@@ -94,4 +94,4 @@ const Register: React.FC<RegisterComponentProps> = ({register, error, clearRegis
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

@@ -7,7 +7,7 @@ import {
     CREATE_TRANSACTION_PROCESS,
     CREATE_TRANSACTION_FAIL,
     CLEAR_CREATE_TRANSACTION_ERROR
-} from "./types";
+} from './types'
 
 const initialState = {
     transactions: [] as Transaction[],
@@ -15,8 +15,8 @@ const initialState = {
     createTransactionIsPending: false,
     createTransactionError: '',
     getTransactionsError: ''
-};
-type InitialStateType = typeof initialState;
+}
+type InitialStateType = typeof initialState
 
 export const TransactionsReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
@@ -25,48 +25,48 @@ export const TransactionsReducer = (state = initialState, action: any): InitialS
                 ...state,
                 transactions: action.transactions,
                 getTransactionsIsPending: false
-            };
+            }
 
         case GET_TRANSACTIONS_PROCESS:
             return {
                 ...state,
                 getTransactionsIsPending: true
-            };
+            }
 
         case GET_TRANSACTIONS_FAIL:
             return {
                 ...state,
                 getTransactionsIsPending: false,
                 getTransactionsError: action.error
-            };
+            }
 
         case CREATE_TRANSACTION_SUCCESS:
             return {
                 ...state,
                 transactions: [action.transaction, ...state.transactions],
                 createTransactionIsPending: false
-            };
+            }
 
         case CREATE_TRANSACTION_PROCESS:
             return {
                 ...state,
                 createTransactionIsPending: true
-            };
+            }
 
         case CREATE_TRANSACTION_FAIL:
             return {
                 ...state,
                 createTransactionIsPending: false,
                 createTransactionError: action.error
-            };
+            }
 
         case CLEAR_CREATE_TRANSACTION_ERROR:
             return {
                 ...state,
                 createTransactionError: ''
-            };
+            }
 
         default:
-            return state;
+            return state
     }
 }

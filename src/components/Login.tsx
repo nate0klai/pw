@@ -1,13 +1,13 @@
-import React from 'react';
-import {Box, Button, Grid} from "@material-ui/core";
-import { connect } from 'react-redux';
-import {ThunkDispatch} from 'redux-thunk'
-import {RootState} from '../types'
-import {clearLoginError, login} from '../store/main/actions'
-import {MainTypes} from "../store/main/types";
-import {Field, InjectedFormProps, reduxForm} from 'redux-form'
-import {RenderTextField, ButtonWithModal} from "./index";
-import {Modal} from "./index";
+import React from 'react'
+import { connect } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
+import { Box, Button, Grid } from '@material-ui/core'
+import { Field, InjectedFormProps, reduxForm } from 'redux-form'
+import ButtonWithModal from 'src/components/ButtonWithModal'
+import { RenderTextField, Modal } from 'src/components'
+import { RootState } from '../types'
+import { clearLoginError as clearLoginErrorCreator, login as loginCreator } from '../store/main/actions'
+import { MainTypes } from '../store/main/types'
 
 interface LoginFormValuesType {
     email: string,
@@ -60,25 +60,25 @@ interface MapDispatchType {
     clearLoginError: () => void
 }
 
-type LoginComponentProps = MapStateType & MapDispatchType;
+type LoginComponentProps = MapStateType & MapDispatchType
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, MainTypes>): MapDispatchType => ({
-    login: (email: string, password: string) => dispatch(login(email, password)),
-    clearLoginError: () => dispatch(clearLoginError())
-});
+    login: (email: string, password: string) => dispatch(loginCreator(email, password)),
+    clearLoginError: () => dispatch(clearLoginErrorCreator())
+})
 
 const mapStateToProps = (state: RootState): MapStateType => ({
     error: state.main.loginError
 })
 
-const Login: React.FC<LoginComponentProps> = ({login, error, clearLoginError}) => {
+const Login: React.FC<LoginComponentProps> = ({ login, error, clearLoginError }) => {
 
-    const handleLogin = ({email, password}: LoginFormValuesType) => login(email, password)
+    const handleLogin = ({ email, password }: LoginFormValuesType) => login(email, password)
 
     return (
         <>
             <ButtonWithModal buttonTitle="login">
-                <LoginForm onSubmit={handleLogin}/>
+                <LoginForm onSubmit={handleLogin} />
             </ButtonWithModal>
             <Modal open={error.length > 0} handleClose={clearLoginError}>
                 <Box>{error}</Box>
@@ -87,4 +87,4 @@ const Login: React.FC<LoginComponentProps> = ({login, error, clearLoginError}) =
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

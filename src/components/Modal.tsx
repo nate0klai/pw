@@ -1,6 +1,6 @@
-import React from 'react';
-import {Box, Modal as MUIModal} from "@material-ui/core";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import React from 'react'
+import { Box, Modal as MUIModal } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 interface Props {
     open: boolean,
@@ -20,11 +20,11 @@ const useStyles = makeStyles((theme: Theme) =>
             left: '50%',
             transform: 'translate(-50%, -50%)'
         }
-    }),
-);
+    })
+)
 
-const Modal: React.FC<Props> = ({open, handleClose, children}) => {
-    const classes = useStyles();
+const Modal: React.FC<Props> = ({ open, handleClose, children }) => {
+    const classes = useStyles()
 
     return (
         <MUIModal
@@ -40,4 +40,4 @@ const Modal: React.FC<Props> = ({open, handleClose, children}) => {
     )
 }
 
-export default Modal;
+export default Modal

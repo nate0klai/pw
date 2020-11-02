@@ -1,36 +1,28 @@
-import React from "react"
-import {Box, Container} from "@material-ui/core"
-import {Transactions, CreateTransaction} from "../components"
-import {connect} from "react-redux"
-import {RootState} from "../types";
-import {ThunkDispatch} from "redux-thunk";
-import {TransactionsTypes} from "../store/transactions/types";
+import React from 'react'
+import { connect } from 'react-redux'
+import { Box, Container } from '@material-ui/core'
+import Transactions from 'src/components/Transactions'
+import CreateTransaction from 'src/components/CreateTransaction'
+import { RootState } from '../types'
 
 interface MapStatePropsType {
     isAuthorized: boolean
-}
-interface MapDispatchPropsType {
-
 }
 
 const mapStateToProps = (state: RootState) => ({
     isAuthorized: state.main.isAuthorized
 })
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, TransactionsTypes>): MapDispatchPropsType => ({
-
-});
-
-const Content: React.FC<MapStatePropsType & MapDispatchPropsType> = ({isAuthorized}) => {
+const Content: React.FC<MapStatePropsType> = ({ isAuthorized }) => {
     return (
         <Container>
             <Box py={6}>
                 {isAuthorized ? (
                     <>
                         <Box display="flex" justifyContent="flex-end">
-                            <CreateTransaction/>
+                            <CreateTransaction />
                         </Box>
-                        <Transactions/>
+                        <Transactions />
                     </>
                 ) : (
                     <Box>
@@ -43,4 +35,4 @@ const Content: React.FC<MapStatePropsType & MapDispatchPropsType> = ({isAuthoriz
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Content)
+export default connect(mapStateToProps)(Content)

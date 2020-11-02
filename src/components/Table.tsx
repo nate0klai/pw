@@ -1,3 +1,5 @@
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import {
     createStyles,
     Table as MUITable,
@@ -6,23 +8,23 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TableSortLabel, Theme,
-} from "@material-ui/core";
-import React from "react";
-import {Transaction} from "../store/transactions/types";
-import {makeStyles} from "@material-ui/core/styles";
+    TableSortLabel,
+    Theme,
+    Typography
+} from '@material-ui/core'
+import { Transaction } from '../store/transactions/types'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: '100%',
+            width: '100%'
         },
         paper: {
             width: '100%',
-            marginBottom: theme.spacing(2),
+            marginBottom: theme.spacing(2)
         },
         table: {
-            minWidth: 750,
+            minWidth: 750
         },
         visuallyHidden: {
             border: 0,
@@ -33,12 +35,12 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: 0,
             position: 'absolute',
             top: 20,
-            width: 1,
-        },
-    }),
-);
+            width: 1
+        }
+    })
+)
 
-type Order = 'asc' | 'desc';
+type Order = 'asc' | 'desc'
 
 interface HeadCell {
     disablePadding: boolean;
@@ -63,38 +65,38 @@ interface EnhancedTableProps {
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
-        return -1;
+        return -1
     }
     if (b[orderBy] > a[orderBy]) {
-        return 1;
+        return 1
     }
-    return 0;
+    return 0
 }
 
 function getComparator<Key extends keyof Transaction>(
     order: Order,
-    orderBy: Key,
+    orderBy: Key
 ): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
     return order === 'desc'
         ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
+        : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
 function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+    const stabilizedThis = array.map((el, index) => [el, index] as [T, number])
     stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
+        const order = comparator(a[0], b[0])
+        if (order !== 0) return order
+        return a[1] - b[1]
+    })
+    return stabilizedThis.map((el) => el[0])
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-    const { classes, order, orderBy, onRequestSort } = props;
+    const { classes, order, orderBy, onRequestSort } = props
     const createSortHandler = (property: keyof Transaction) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
-    };
+        onRequestSort(event, property)
+    }
 
     return (
         <TableHead>
@@ -113,23 +115,23 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (
-                                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
+                                <Typography component="span" className={classes.visuallyHidden}>
+                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                </Typography>
                             ) : null}
                         </TableSortLabel>
                     </TableCell>
                 ))}
             </TableRow>
         </TableHead>
-    );
+    )
 }
 
 interface RowProps {
     transaction: Transaction
 }
 
-const Row: React.FC<RowProps> = ({transaction}) => {
+const Row: React.FC<RowProps> = ({ transaction }) => {
 
     return (
         <>
@@ -151,16 +153,16 @@ interface TableProps {
     list: Transaction[]
 }
 
-export const Table: React.FC<TableProps> = ({list}) => {
+export const Table: React.FC<TableProps> = ({ list }) => {
     const classes = useStyles()
-    const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof Transaction>('date');
+    const [order, setOrder] = React.useState<Order>('asc')
+    const [orderBy, setOrderBy] = React.useState<keyof Transaction>('date')
 
     const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Transaction) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-    };
+        const isAsc = orderBy === property && order === 'asc'
+        setOrder(isAsc ? 'desc' : 'asc')
+        setOrderBy(property)
+    }
 
     return (
         <TableContainer>
@@ -177,9 +179,7 @@ export const Table: React.FC<TableProps> = ({list}) => {
                 />
                 <TableBody>
                     {stableSort(list, getComparator(order, orderBy))
-                        .map((row, index) => (
-                            <Row key={row.id} transaction={row}/>
-                            ))}
+                        .map((row, index) => (<Row key={row.id} transaction={row} />))}
                 </TableBody>
             </MUITable>
         </TableContainer>

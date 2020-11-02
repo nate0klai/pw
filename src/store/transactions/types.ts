@@ -1,6 +1,3 @@
-import {ThunkAction} from "redux-thunk";
-import {RootState} from "../../types";
-
 export const GET_TRANSACTIONS_SUCCESS = 'GET_TRANSACTIONS_SUCCESS'
 export const GET_TRANSACTIONS_PROCESS = 'GET_TRANSACTIONS_PROCESS'
 export const GET_TRANSACTIONS_FAIL = 'GET_TRANSACTIONS_FAIL'
@@ -43,8 +40,6 @@ export interface Transaction {
     balance: number
 }
 
-type GetTransactionsTypes = GetTransactionsSuccess | GetTransactionsProcess | GetTransactionsFail;
-type CreateTransactionTypes = CreateTransactionSuccess | CreateTransactionProcess | CreateTransactionFail | ClearCreateTransactionError;
-export type TransactionsTypes = GetTransactionsTypes | CreateTransactionTypes;
-
-export type ThunkTransactionsActionType = ThunkAction<Promise<void>, RootState, void, TransactionsTypes>;
+type GetTransactionsTypes = GetTransactionsSuccess | GetTransactionsProcess | GetTransactionsFail
+type CreateTransactionTypes = CreateTransactionSuccess | CreateTransactionProcess | CreateTransactionFail | ClearCreateTransactionError
+export type TransactionsTypes = GetTransactionsTypes | CreateTransactionTypes

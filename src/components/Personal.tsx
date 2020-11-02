@@ -1,12 +1,12 @@
-import React from "react";
-import {Box, Button, Grid, Typography} from "@material-ui/core";
-import {MainTypes, UserFullInfo} from "../store/main/types";
-import {RootState} from "../types";
-import {connect} from "react-redux";
-import {ThunkDispatch} from "redux-thunk";
-import {logout} from "../store/main/actions";
+import React from 'react'
+import { connect } from 'react-redux'
+import { ThunkDispatch } from 'redux-thunk'
 import Cookies from 'js-cookie'
-import {ButtonWithModal} from "./index";
+import { Box, Button, Grid, Typography } from '@material-ui/core'
+import ButtonWithModal from 'src/components/ButtonWithModal'
+import { MainTypes, UserFullInfo } from '../store/main/types'
+import { RootState } from '../types'
+import { logout as logoutCreator } from '../store/main/actions'
 
 interface MapStatePropsType {
     me: UserFullInfo | null
@@ -17,21 +17,21 @@ interface MapDispatchPropsType {
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, MainTypes>): MapDispatchPropsType => ({
-    logout: () => dispatch(logout())
-});
+    logout: () => dispatch(logoutCreator())
+})
 
 const mapStateToProps = (state: RootState) => ({
     me: state.main.me
 })
 
-type PersonalProps = MapStatePropsType & MapDispatchPropsType;
+type PersonalProps = MapStatePropsType & MapDispatchPropsType
 
-const Personal: React.FC<PersonalProps> | null = ({me, logout}) => {
-    if (!me) return null;
+const Personal: React.FC<PersonalProps> | null = ({ me, logout }) => {
+    if (!me) return null
 
     const onLogoutClick = () => {
-        Cookies.remove('id_token');
-        logout();
+        Cookies.remove('id_token')
+        logout()
     }
 
     return (

@@ -12,7 +12,7 @@ import {
     REGISTER_PROGRESS,
     REGISTER_SUCCESS,
     UserFullInfo
-} from "./types";
+} from './types'
 
 const initialState = {
     isAuthorized: false,
@@ -24,8 +24,8 @@ const initialState = {
     loginError: '',
     registerError: '',
     getUserInfoError: ''
-};
-type InitialStateType = typeof initialState;
+}
+type InitialStateType = typeof initialState
 
 export const MainReducer = (state = initialState, action: MainTypes): InitialStateType => {
     switch (action.type) {
@@ -34,52 +34,52 @@ export const MainReducer = (state = initialState, action: MainTypes): InitialSta
                 ...state,
                 isAuthorized: true,
                 loginIsPending: false
-            };
+            }
 
         case REGISTER_SUCCESS:
             return {
                 ...state,
                 isAuthorized: true,
                 registerIsPending: false
-            };
+            }
 
         case LOGIN_PROGRESS:
             return {
                 ...state,
                 loginIsPending: true
-            };
+            }
 
         case REGISTER_PROGRESS:
             return {
                 ...state,
                 registerIsPending: true
-            };
+            }
 
         case LOGIN_FAIL:
             return {
                 ...state,
                 loginIsPending: false,
                 loginError: action.error
-            };
+            }
 
         case CLEAR_LOGIN_ERROR:
             return {
                 ...state,
                 loginError: ''
-            };
+            }
 
         case REGISTER_FAIL:
             return {
                 ...state,
                 registerIsPending: false,
                 registerError: action.error
-            };
+            }
 
         case CLEAR_REGISTER_ERROR:
             return {
                 ...state,
                 registerError: ''
-            };
+            }
 
         case LOGOUT:
             return {
@@ -99,7 +99,7 @@ export const MainReducer = (state = initialState, action: MainTypes): InitialSta
         case GET_USER_INFO_PROGRESS:
             return {
                 ...state,
-                getUserInfoIsPending: true,
+                getUserInfoIsPending: true
             }
 
         case GET_USER_INFO_FAIL:
@@ -110,6 +110,6 @@ export const MainReducer = (state = initialState, action: MainTypes): InitialSta
             }
 
         default:
-            return state;
+            return state
     }
 }
