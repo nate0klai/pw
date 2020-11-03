@@ -27,7 +27,8 @@ const mapStateToCreateTransactionFormComponentProps = (state: RootState) => ({
 })
 
 const required = (value: string | undefined) => value ? undefined : 'Required'
-const isNumber = (value: string) => +value ? undefined : 'enter number'
+const isNumber = (value: string) => !isNaN(+value) ? undefined : 'its not a number'
+const isPositive = (value: string) => (value.length > 0 && +value && (+value > 0)) ? undefined : 'too little money'
 const moneyEnough = (balance: number | undefined) => balance ?
     (value: string) => (value.length > 0 && +value && (+value <= balance)) ? undefined : 'not enough' :
     () => false
@@ -49,7 +50,7 @@ const CreateTransactionFormComponent: React.FC<CreateTransactionFormComponentPro
                     <Field name="recipientName" component={UsersList} validate={[ required ]} />
                 </Grid>
                 <Grid item>
-                    <Field name="amount" component={RenderTextField} placeholder="amount" validate={[ required, isNumber, moneyLessBalance ]} />
+                    <Field name="amount" component={RenderTextField} placeholder="amount" validate={[ required, isNumber, isPositive, moneyLessBalance ]} />
                 </Grid>
                 <Grid item>
                     <Button type="submit" variant="outlined" disabled={submitting}>create</Button>

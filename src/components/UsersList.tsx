@@ -9,6 +9,12 @@ import { UserSimpleInfo } from '../store/main/types'
 import { RootState } from '../types'
 import { TransactionsTypes } from '../store/transactions/types'
 
+interface MapStatePropsType {
+    myId?: number
+}
+const mapStateToProps = (state: RootState) => ({
+    myId: state.main.me?.id
+})
 interface MapDispatchPropsType {
     changeFormValue: (val: string | null) => void
 }
@@ -16,12 +22,12 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, any, Transactions
     changeFormValue: (val: string | null) => dispatch(change('createTransactionForm', 'recipientName', val))
 })
 
-const UsersList: React.FC<MapDispatchPropsType> = ({ changeFormValue }) => {
+const UsersList: React.FC<MapStatePropsType & MapDispatchPropsType> = ({ myId, changeFormValue }) => {
     const [list, setList] = useState<UserSimpleInfo[]>([])
 
     const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target
-        const filteredList = value.length > 0 ? (await filteredUserList(value)) : []
+        const filteredList = value.length > 0 ? (await filteredUserList(value)).filter(u => u.id !== myId) : []
         setList(filteredList)
     }
 
@@ -53,4 +59,4 @@ const UsersList: React.FC<MapDispatchPropsType> = ({ changeFormValue }) => {
     )
 }
 
-export default connect(null, mapDispatchToProps)(UsersList)
+export default connect(mapStateToProps, mapDispatchToProps)(UsersList)
